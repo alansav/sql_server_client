@@ -49,6 +49,12 @@ namespace Savage.SqlServerClient
                 return handler.Handle(new OptimizedDataReader(reader));
             }
         }
+
+        public static object ExecuteScalar(SqlTransaction transaction, IParameters<T> parameters)
+        {
+            var command = PrepareCommand(transaction, parameters);
+            return Client.ExecuteScalar(command.Transaction.Connection, command);
+        }
     }
 
     public interface IParameters<T> where T : StoredProcedure
