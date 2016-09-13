@@ -1,28 +1,54 @@
-﻿using Xunit;
+﻿using System.Data;
+using Xunit;
 
 namespace Savage.SqlServerClient
 {
     public class StoredProcedureTest
     {
-        private class ConcreteStoredProcedure : StoredProcedure
+        public class Constructor
         {
-            public ConcreteStoredProcedure(string storedProcedureName)
-                : base(storedProcedureName)
+            [Fact]
+            public void StoredProcedureNameAssignedCorrectly()
             {
+                const string expectedStoredProcedureName = "storedProcedure";
+
+                //Act
+                var sut = new FakeStoredProcedure();
+
+                //Assert
+                Assert.Equal(expectedStoredProcedureName, sut.StoredProcedureName);
             }
         }
 
-        [Fact]
-        public void StoredProcedureNameAssignedCorrectly()
+        public class CreateSqlCommand
         {
-            //Arrange
-            string storedProcedureName = "who2";
+            const string ExpectedStoredProcedureName = "storedProcedure";
+            private readonly StoredProcedure _storedProcedure;
+            public CreateSqlCommand()
+            {
+                _storedProcedure = new FakeStoredProcedure();
+            }
+            
+            
+            [Fact]
+            public void Should_Return_SqlCommand_With_StoredProcedureName_As_CommandText()
+            {
+                //Act
+                var sut = _storedProcedure.CreateSqlCommand();
 
-            //Act
-            var sut = new ConcreteStoredProcedure(storedProcedureName);
+                //Assert
+                Assert.Equal(ExpectedStoredProcedureName, sut.CommandText);
+            }
 
-            //Assert
-            Assert.Equal(storedProcedureName, sut.StoredProcedureName);
+            [Fact]
+            public void Should_Return_SqlCommand_With_CommandType_StoredProcedure()
+            {
+                //Act
+                var sut = _storedProcedure.CreateSqlCommand();
+
+                //Assert
+                Assert.Equal(CommandType.StoredProcedure, sut.CommandType);
+            }
         }
     }
 }
