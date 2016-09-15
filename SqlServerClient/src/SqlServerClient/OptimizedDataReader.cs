@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace Savage.SqlServerClient
 {
-    public class OptimizedDataReader
+    public class OptimizedDataReader : IOptimizedDataReader
     {
         private Dictionary<string, int> _dictionary = new Dictionary<string, int>();
         private readonly IDataReader _dataReader;

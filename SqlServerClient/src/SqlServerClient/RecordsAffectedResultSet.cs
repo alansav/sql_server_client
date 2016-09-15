@@ -1,6 +1,6 @@
-﻿namespace Savage.SqlServerClient.ResultSets
+﻿namespace Savage.SqlServerClient
 {
-    public class RowsAffectedResultSet : IResultSet<ISqlQuery>
+    public class RowsAffectedResultSet : IResultSet
     {
         public readonly int RowsAffected;
         public RowsAffectedResultSet(int rowsAffected)

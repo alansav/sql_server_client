@@ -1,6 +1,6 @@
 ﻿using Xunit;
 
-namespace Savage.SqlServerClient.ResultSets
+namespace Savage.SqlServerClient
 {
     public class RecordsAffectedResultSetTests
     {

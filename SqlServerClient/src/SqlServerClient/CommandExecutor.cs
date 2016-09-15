@@ -2,23 +2,21 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Threading.Tasks;
-using Savage.SqlServerClient.ResultSets;
 
 namespace Savage.SqlServerClient
 {
-    public class CommandExecutor
+    public class CommandExecutor : ICommandExecutor
     {
         private readonly SqlCommand _command;
 
-        public CommandExecutor(SqlTransaction transaction, SqlCommand command)
+        public CommandExecutor(IDbSession dbSession, SqlCommand command)
         {
-            if (transaction == null)
-                throw new ArgumentNullException(nameof(transaction));
+            if (dbSession == null)
+                throw new ArgumentNullException(nameof(dbSession));
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
-            command.Transaction = transaction;
-            command.Connection = transaction.Connection;
+            dbSession.AddCommandToSession(command);
 
             SetNullParametersToDbNull(command);
 
