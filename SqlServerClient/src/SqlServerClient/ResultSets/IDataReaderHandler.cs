@@ -4,4 +4,9 @@
     {
         IResultSet<T> Handle(OptimizedDataReader optimizedDataReader);
     }
+
+    public interface IDataReaderHandler
+    {
+        IResultSet Handle(OptimizedDataReader optimizedDataReader);
+    }
 }

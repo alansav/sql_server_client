@@ -21,7 +21,7 @@ namespace Savage.SqlServerClient
 
             return command;
         }
-
+        
         private static void AddParameters(SqlCommand command, IParameters<T> parameters)
         {
             if (parameters == null)
@@ -34,6 +34,25 @@ namespace Savage.SqlServerClient
                 if (p.Value == null)
                     p.Value = DBNull.Value;
             }
+        }
+    }
+
+    public class CommandBuilder
+    {
+        public static SqlCommand BuildSqlCommand(string storedProcedureName, SqlParameter[] parameters)
+        {
+            var command = new SqlCommand
+            {
+                CommandText = storedProcedureName,
+                CommandType = CommandType.StoredProcedure
+            };
+
+            if (parameters != null)
+            {
+                command.Parameters.AddRange(parameters);
+            }
+
+            return command;
         }
     }
 }

@@ -39,7 +39,7 @@ namespace Savage.SqlServerClient
             await OpenConnectionIfNotAlreadyOpen(command.Connection);
             return command;
         }
-
+        
         private static async Task OpenConnectionIfNotAlreadyOpen(SqlConnection connection)
         {
             if (connection.State != ConnectionState.Open)

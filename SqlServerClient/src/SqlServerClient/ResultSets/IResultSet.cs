@@ -5,4 +5,8 @@
     {
 
     }
+
+    public interface IResultSet
+    {
+    }
 }
