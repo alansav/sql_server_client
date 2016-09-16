@@ -37,7 +37,7 @@ namespace Savage.SqlServerClient
 
         private void CloseConnection()
         {
-            if (_transaction.Connection.State == ConnectionState.Open)
+            if (_transaction.Connection != null && _transaction.Connection.State == ConnectionState.Open)
             {
                 _transaction.Connection.Close();
             }
