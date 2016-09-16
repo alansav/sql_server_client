@@ -13,9 +13,10 @@ namespace Savage.SqlServerClient
             if (connection == null)
                 throw new ArgumentNullException(nameof(connection));
 
+            OpenConnectionIfNotAlreadyOpen(connection);
             _transaction = connection.BeginTransaction();
         }
-
+        
         public void AddCommandToSession(SqlCommand command)
         {
             command.Transaction = _transaction;
@@ -39,6 +40,14 @@ namespace Savage.SqlServerClient
             if (_transaction.Connection.State == ConnectionState.Open)
             {
                 _transaction.Connection.Close();
+            }
+        }
+
+        private void OpenConnectionIfNotAlreadyOpen(SqlConnection connection)
+        {
+            if (connection.State != ConnectionState.Open)
+            {
+                connection.Open();
             }
         }
     }
