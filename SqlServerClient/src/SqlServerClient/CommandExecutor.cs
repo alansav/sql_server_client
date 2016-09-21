@@ -7,6 +7,7 @@ namespace Savage.SqlServerClient
 {
     public class CommandExecutor : ICommandExecutor
     {
+        private readonly IDbSession _dbSession;
         private readonly SqlCommand _command;
 
         public CommandExecutor(IDbSession dbSession, SqlCommand command)
@@ -16,11 +17,31 @@ namespace Savage.SqlServerClient
             if (command == null)
                 throw new ArgumentNullException(nameof(command));
 
-            dbSession.AddCommandToSession(command);
-
-            SetNullParametersToDbNull(command);
-
+            _dbSession = dbSession;
             _command = command;
+
+            PrepareSqlCommand(_command);
+        }
+
+        private void PrepareSqlCommand(SqlCommand command)
+        {
+            _dbSession.AddCommandToSession(command);
+            SetNullParametersToDbNull(command);
+        }
+
+        private SqlCommand BuildAndPrepareSqlCommand(IStoredProcedure storedProcedure)
+        {
+            var command = CommandBuilder.BuildSqlCommand(storedProcedure);
+            PrepareSqlCommand(command);
+            return command;
+        }
+
+        public CommandExecutor(IDbSession dbSession)
+        {
+            if (dbSession == null)
+                throw new ArgumentNullException(nameof(dbSession));
+
+            _dbSession = dbSession;
         }
 
         public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync()
@@ -28,6 +49,15 @@ namespace Savage.SqlServerClient
             await OpenConnectionIfNotAlreadyOpen(_command.Connection);
             var rowsAffected = await _command.ExecuteNonQueryAsync();
 
+            return new RowsAffectedResultSet(rowsAffected);
+        }
+
+        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync(IStoredProcedure storedProcedure)
+        {
+            var command = BuildAndPrepareSqlCommand(storedProcedure);
+            await OpenConnectionIfNotAlreadyOpen(command.Connection);
+
+            var rowsAffected = await _command.ExecuteNonQueryAsync();
             return new RowsAffectedResultSet(rowsAffected);
         }
 
@@ -39,10 +69,27 @@ namespace Savage.SqlServerClient
             return obj;
         }
 
+        public async Task<object> ExecuteScalarAsync(IStoredProcedure storedProcedure)
+        {
+            var command = BuildAndPrepareSqlCommand(storedProcedure);
+            await OpenConnectionIfNotAlreadyOpen(command.Connection);
+            return await command.ExecuteScalarAsync();
+        }
+
         public async Task<IResultSet>  ExecuteReaderAsync(IDataReaderHandler handler)
         {
             await OpenConnectionIfNotAlreadyOpen(_command.Connection);
             using (var reader = await _command.ExecuteReaderAsync())
+            {
+                return handler.Handle(new OptimizedDataReader(reader));
+            }
+        }
+
+        public async Task<IResultSet> ExecuteReaderAsync(IStoredProcedure storedProcedure, IDataReaderHandler handler)
+        {
+            var command = BuildAndPrepareSqlCommand(storedProcedure);
+            await OpenConnectionIfNotAlreadyOpen(command.Connection);
+            using (var reader = await command.ExecuteReaderAsync())
             {
                 return handler.Handle(new OptimizedDataReader(reader));
             }
