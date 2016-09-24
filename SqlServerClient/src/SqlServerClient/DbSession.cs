@@ -16,7 +16,17 @@ namespace Savage.SqlServerClient
             OpenConnectionIfNotAlreadyOpen(connection);
             _transaction = connection.BeginTransaction();
         }
-        
+
+        public DbSession(string connectionString)
+        {
+            if (connectionString == null)
+                throw new ArgumentNullException(nameof(connectionString));
+
+            var connection = new SqlConnection(connectionString);
+            OpenConnectionIfNotAlreadyOpen(connection);
+            _transaction = connection.BeginTransaction();
+        }
+
         public void AddCommandToSession(SqlCommand command)
         {
             command.Transaction = _transaction;
@@ -29,6 +39,11 @@ namespace Savage.SqlServerClient
             CloseConnection();
         }
 
+        public void Dispose()
+        {
+            CloseConnection();
+        }
+
         public void Rollback()
         {
             _transaction.Rollback();
@@ -37,7 +52,7 @@ namespace Savage.SqlServerClient
 
         private void CloseConnection()
         {
-            if (_transaction.Connection != null && _transaction.Connection.State == ConnectionState.Open)
+            if (_transaction?.Connection != null && _transaction.Connection.State == ConnectionState.Open)
             {
                 _transaction.Connection.Close();
             }

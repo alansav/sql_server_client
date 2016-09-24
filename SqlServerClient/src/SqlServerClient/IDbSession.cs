@@ -1,8 +1,9 @@
-﻿using System.Data.SqlClient;
+﻿using System;
+using System.Data.SqlClient;
 
 namespace Savage.SqlServerClient
 {
-    public interface IDbSession
+    public interface IDbSession : IDisposable
     {
         void Commit();
         void Rollback();

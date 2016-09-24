@@ -57,7 +57,7 @@ namespace Savage.SqlServerClient
             var command = BuildAndPrepareSqlCommand(storedProcedure);
             await OpenConnectionIfNotAlreadyOpen(command.Connection);
 
-            var rowsAffected = await _command.ExecuteNonQueryAsync();
+            var rowsAffected = await command.ExecuteNonQueryAsync();
             return new RowsAffectedResultSet(rowsAffected);
         }
 
