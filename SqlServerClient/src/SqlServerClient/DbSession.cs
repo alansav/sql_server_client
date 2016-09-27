@@ -58,7 +58,7 @@ namespace Savage.SqlServerClient
             }
         }
 
-        private void OpenConnectionIfNotAlreadyOpen(SqlConnection connection)
+        private static void OpenConnectionIfNotAlreadyOpen(IDbConnection connection)
         {
             if (connection.State != ConnectionState.Open)
             {

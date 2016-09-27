@@ -20,5 +20,11 @@ namespace Savage.SqlServerClient
             var mockDbSession = new Mock<IDbSession>();
             Assert.Throws<ArgumentNullException>(() => new CommandExecutor(mockDbSession.Object, null));
         }
+
+        [Fact]
+        public void Constructor2_Should_Throw_ArgumentNullException_When_dbSession_Is_Null()
+        {
+            Assert.Throws<ArgumentNullException>(() => new CommandExecutor(null));
+        }
     }
 }
