@@ -12,9 +12,7 @@ namespace Savage.SqlServerClient
 
         public OptimizedDataReader(IDataReader dataReader)
         {
-            if (dataReader == null)
-                throw new ArgumentNullException(nameof(dataReader));
-            _dataReader = dataReader;
+            _dataReader = dataReader ?? throw new ArgumentNullException(nameof(dataReader));
         }
 
         public bool Read()
