@@ -2,6 +2,6 @@
 {
     public interface IDataReaderHandler
     {
-        IResultSet Handle(IOptimizedDataReader optimizedDataReader);
+        IResultSet Handle(Data.IOptimizedDataReader optimizedDataReader);
     }
 }

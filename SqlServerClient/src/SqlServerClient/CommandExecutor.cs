@@ -81,7 +81,7 @@ namespace Savage.SqlServerClient
             await OpenConnectionIfNotAlreadyOpen(_command.Connection);
             using (var reader = await _command.ExecuteReaderAsync())
             {
-                return handler.Handle(new OptimizedDataReader(reader));
+                return handler.Handle(new Data.OptimizedDataReader(reader));
             }
         }
 
@@ -91,7 +91,7 @@ namespace Savage.SqlServerClient
             await OpenConnectionIfNotAlreadyOpen(command.Connection);
             using (var reader = await command.ExecuteReaderAsync())
             {
-                return handler.Handle(new OptimizedDataReader(reader));
+                return handler.Handle(new Data.OptimizedDataReader(reader));
             }
         }
 

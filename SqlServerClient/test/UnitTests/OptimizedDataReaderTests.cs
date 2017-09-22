@@ -10,7 +10,7 @@ namespace Savage.SqlServerClient
         [Fact]
         public void Constructor_Should_Throw_ArgumentNullException_When_dataReader_Is_Null()
         {
-            Assert.Throws<ArgumentNullException>(() => new OptimizedDataReader(null));
+            Assert.Throws<ArgumentNullException>(() => new Data.OptimizedDataReader(null));
         }
 
         [Fact]
@@ -19,7 +19,7 @@ namespace Savage.SqlServerClient
             var mockDataReader = new Mock<IDataReader>();
             mockDataReader.Setup(x => x.Read());
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             sut.Read();
 
             mockDataReader.Verify(x=>x.Read(), Times.Once);
@@ -31,7 +31,7 @@ namespace Savage.SqlServerClient
             var mockDataReader = new Mock<IDataReader>();
             mockDataReader.Setup(x => x.NextResult());
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             sut.NextResult();
 
             mockDataReader.Verify(x => x.NextResult(), Times.Once);
@@ -44,7 +44,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.GetOrdinal("boolean")).Returns(8);
             mockDataReader.Setup(x => x.GetBoolean(8)).Returns(true);
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetBoolean("boolean");
 
             Assert.Equal(true, result);
@@ -68,7 +68,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(8)).Returns(true);
             mockDataReader.Setup(x => x.GetBoolean(8));
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetNullableBoolean("boolean");
 
             Assert.Equal(null, result);
@@ -85,7 +85,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(8)).Returns(false);
             mockDataReader.Setup(x => x.GetBoolean(8)).Returns(true);
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetNullableBoolean("boolean");
 
             Assert.Equal(true, result);
@@ -103,7 +103,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(9)).Returns(false);
             mockDataReader.Setup(x => x.GetString(9)).Returns(fakeResult);
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetString("string");
 
             Assert.Equal(fakeResult, result);
@@ -127,7 +127,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(9)).Returns(true);
             mockDataReader.Setup(x => x.GetString(9));
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetString("string");
 
             Assert.Equal(null, result);
@@ -144,7 +144,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.GetOrdinal("datetime")).Returns(10);
             mockDataReader.Setup(x => x.GetDateTime(10)).Returns(fakeDateTimeResult);
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetDateTime("datetime");
 
             Assert.Equal(fakeDateTimeResult, result);
@@ -169,7 +169,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(11)).Returns(false);
             mockDataReader.Setup(x => x.GetDateTime(11)).Returns(fakeDateTimeResult);
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetNullableDateTime("datetime");
 
             Assert.Equal(fakeDateTimeResult, result);
@@ -186,7 +186,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(11)).Returns(true);
             mockDataReader.Setup(x => x.GetDateTime(11));
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetNullableDateTime("datetime");
 
             Assert.Equal(null, result);
@@ -203,7 +203,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.GetOrdinal("int32")).Returns(12);
             mockDataReader.Setup(x => x.GetInt32(12)).Returns(fakeResult);
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetInt32("int32");
 
             Assert.Equal(fakeResult, result);
@@ -228,7 +228,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(12)).Returns(false);
             mockDataReader.Setup(x => x.GetInt32(12)).Returns(fakeResult);
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetNullableInt32("int32");
 
             Assert.Equal(fakeResult, result);
@@ -245,7 +245,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(12)).Returns(true);
             mockDataReader.Setup(x => x.GetInt32(12));
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetNullableInt32("int32");
 
             Assert.Equal(null, result);
@@ -262,7 +262,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.GetOrdinal("int64")).Returns(13);
             mockDataReader.Setup(x => x.GetInt64(13)).Returns(fakeResult);
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetInt64("int64");
 
             Assert.Equal(fakeResult, result);
@@ -287,7 +287,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(13)).Returns(false);
             mockDataReader.Setup(x => x.GetInt64(13)).Returns(fakeResult);
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetNullableInt64("int64");
 
             Assert.Equal(fakeResult, result);
@@ -304,7 +304,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(13)).Returns(true);
             mockDataReader.Setup(x => x.GetInt64(13));
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetNullableInt64("int64");
 
             Assert.Equal(null, result);
@@ -321,7 +321,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.GetOrdinal("guid")).Returns(14);
             mockDataReader.Setup(x => x.GetGuid(14)).Returns(fakeResult);
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetGuid("guid");
 
             Assert.Equal(fakeResult, result);
@@ -346,7 +346,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(14)).Returns(false);
             mockDataReader.Setup(x => x.GetGuid(14)).Returns(fakeResult);
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetNullableGuid("guid");
 
             Assert.Equal(fakeResult, result);
@@ -363,7 +363,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(14)).Returns(true);
             mockDataReader.Setup(x => x.GetGuid(14));
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetNullableGuid("guid");
 
             Assert.Equal(null, result);
@@ -381,7 +381,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(15)).Returns(false);
             mockDataReader.Setup(x => x.GetValue(15)).Returns(fakeResult);
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetBytes("bytes");
 
             Assert.Equal(fakeResult, result);
@@ -405,7 +405,7 @@ namespace Savage.SqlServerClient
             mockDataReader.Setup(x => x.IsDBNull(15)).Returns(true);
             mockDataReader.Setup(x => x.GetValue(15));
 
-            var sut = new OptimizedDataReader(mockDataReader.Object);
+            var sut = new Data.OptimizedDataReader(mockDataReader.Object);
             var result = sut.GetBytes("bytes");
 
             Assert.Equal(null, result);
