@@ -12,6 +12,8 @@
     <PackageTags>Sql Server Client;async</PackageTags>
     <AssemblyName>Savage.Data.SqlServerClient</AssemblyName>
     <RootNamespace>Savage.Data.SqlServerClient</RootNamespace>
+    <PackageId>SqlServerClient</PackageId>
+    <Version>4.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">
