@@ -1,6 +1,8 @@
-﻿namespace Savage.SqlServerClient
+﻿using System.Collections.Generic;
+
+namespace Savage.Data
 {
-    public class RowsAffectedResultSet : IResultSet
+    public class RowsAffectedResultSet
     {
         public readonly int RowsAffected;
         public RowsAffectedResultSet(int rowsAffected)

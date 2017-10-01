@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <VersionPrefix>4.0.0</VersionPrefix>
+    <TargetFrameworks>netstandard2.0;net45;net46;</TargetFrameworks>
+    <Title>Core Database Client</Title>
+    <Description>A class library which provides a framework for communicating with SQL Server</Description>
+    <Copyright>© 2017 Alan Savage</Copyright>
+    <RootNamespace>Savage.Data</RootNamespace>
+    <AssemblyName>Savage.Data</AssemblyName>
+    <Description />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OptimizedDataReader" Version="1.1.0" />
+  </ItemGroup>
+
+</Project>

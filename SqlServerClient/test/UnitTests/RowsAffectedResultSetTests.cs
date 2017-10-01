@@ -1,8 +1,8 @@
 ﻿using Xunit;
 
-namespace Savage.SqlServerClient
+namespace Savage.Data
 {
-    public class RecordsAffectedResultSetTests
+    public class RowsAffectedResultSetTests
     {
         [Fact]
         public void ConstructorShouldSetRowsAffectedProperty()

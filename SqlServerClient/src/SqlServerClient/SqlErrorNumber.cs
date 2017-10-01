@@ -1,4 +1,4 @@
-﻿namespace Savage.SqlServerClient
+﻿namespace Savage.Data.SqlServerClient
 {
     public enum SqlErrorNumber
     {
