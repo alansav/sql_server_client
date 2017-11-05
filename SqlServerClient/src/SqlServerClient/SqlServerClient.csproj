@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>4.0.2</Version>
+    <Version>5.0.0</Version>
     <TargetFrameworks>netstandard2.0;net45;net46;</TargetFrameworks>
     <Title>SQL Server Client</Title>
     <Authors>Alan Savage</Authors>

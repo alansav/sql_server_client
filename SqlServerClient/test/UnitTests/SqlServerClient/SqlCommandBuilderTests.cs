@@ -19,8 +19,8 @@ namespace Savage.Data.SqlServerClient
         public void BuildCommand_Should_Set_CommandText_to_StoredProcedure_Name()
         {
             var expectedStoredProcedureName = "store_proc_1";
-            var mockStoredProcedure = new Mock<IStoredProcedure>();
-            mockStoredProcedure.SetupGet(x => x.StoredProcedureName).Returns(expectedStoredProcedureName);
+            var mockStoredProcedure = new Mock<ISqlCommand>();
+            mockStoredProcedure.SetupGet(x => x.CommandText).Returns(expectedStoredProcedureName);
 
             var sut = new SqlCommandBuilder();
             var command = sut.BuildCommand(mockStoredProcedure.Object);
@@ -31,7 +31,8 @@ namespace Savage.Data.SqlServerClient
         [Fact]
         public void BuildCommand_Should_Set_CommandType_to_StoredProcedure()
         {
-            var mockStoredProcedure = new Mock<IStoredProcedure>();
+            var mockStoredProcedure = new Mock<ISqlCommand>();
+            mockStoredProcedure.Setup(x => x.CommandType).Returns(CommandType.StoredProcedure);
             
             var sut = new SqlCommandBuilder();
             var command = sut.BuildCommand(mockStoredProcedure.Object);
@@ -48,7 +49,7 @@ namespace Savage.Data.SqlServerClient
                 new SqlParameter("Parameter1", 123),
                 new SqlParameter("Parameter2", 222),
             };
-            var mockStoredProcedure = new Mock<IStoredProcedure>();
+            var mockStoredProcedure = new Mock<ISqlCommand>();
             mockStoredProcedure.SetupGet(x => x.Parameters).Returns(fakeParameters);
 
             var sut = new SqlCommandBuilder();

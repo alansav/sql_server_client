@@ -9,20 +9,20 @@ namespace Savage.Data.MySqlClient
 {
     public class MySqlCommandBuilder : ICommandBuilder
     {
-        public IDbCommand BuildCommand(IStoredProcedure storedProcedure)
+        public IDbCommand BuildCommand(ISqlCommand sqlCommand)
         {
-            if (storedProcedure == null)
-                throw new ArgumentNullException(nameof(storedProcedure));
+            if (sqlCommand == null)
+                throw new ArgumentNullException(nameof(sqlCommand));
 
             var command = new MySqlCommand
             {
-                CommandText = storedProcedure.StoredProcedureName,
-                CommandType = CommandType.StoredProcedure
+                CommandText = sqlCommand.CommandText,
+                CommandType = sqlCommand.CommandType
             };
 
-            if (storedProcedure.Parameters != null)
+            if (sqlCommand.Parameters != null)
             {
-                command.Parameters.AddRange(storedProcedure.Parameters.ToArray());
+                command.Parameters.AddRange(sqlCommand.Parameters.ToArray());
                 SetNullParametersToDbNull(command);
             }
             return command;

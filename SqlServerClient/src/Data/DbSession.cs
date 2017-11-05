@@ -16,10 +16,19 @@ namespace Savage.Data
             DbClient = dbClient ?? throw new ArgumentNullException(nameof(dbClient));
             DbConnection = connection;
         }
-        
+
         public void Dispose()
         {
-            CloseConnection();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                CloseConnection();
+            }
         }
 
         private void AddCommandToTransaction(IDbCommand command)
@@ -31,23 +40,23 @@ namespace Savage.Data
             command.Connection = _transaction.Connection;
         }
 
-        public async Task<IEnumerable<IResultSetRow<T>>> ExecuteReaderAsync<T>(T storedProcedure, IDataReaderHandler<T> handler) where T : IStoredProcedure
+        public async Task<IEnumerable<IResultSetRow<T>>> ExecuteReaderAsync<T>(T sqlCommand, IDataReaderHandler<T> handler) where T : ISqlCommand
         {
-            IDbCommand command = await BuildCommand(storedProcedure);
+            IDbCommand command = await BuildCommand(sqlCommand);
 
             return await DbClient.CommandExecutor.ExecuteReaderAsync(command, handler);
         }
-        
-        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync<T>(T storedProcedure) where T : IStoredProcedure
+
+        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync<T>(T sqlCommand) where T : ISqlCommand
         {
-            IDbCommand command = await BuildCommand(storedProcedure);
+            IDbCommand command = await BuildCommand(sqlCommand);
 
             return await DbClient.CommandExecutor.ExecuteNonQueryAsync(command);
         }
 
-        public async Task<object> ExecuteScalarAsync<T>(T storedProcedure) where T : IStoredProcedure
+        public async Task<object> ExecuteScalarAsync<T>(T sqlCommand) where T : ISqlCommand
         {
-            IDbCommand command = await BuildCommand(storedProcedure);
+            IDbCommand command = await BuildCommand(sqlCommand);
 
             return await DbClient.CommandExecutor.ExecuteScalarAsync(command);
         }
@@ -64,12 +73,12 @@ namespace Savage.Data
             CloseConnection();
         }
 
-        private async Task<IDbCommand> BuildCommand(IStoredProcedure storedProcedure)
+        private async Task<IDbCommand> BuildCommand(ISqlCommand sqlCommand)
         {
             if (DbConnection.State == ConnectionState.Closed)
                 await DbClient.OpenConnectionAsync(DbConnection);
 
-            var command = DbClient.CommandBuilder.BuildCommand(storedProcedure);
+            var command = DbClient.CommandBuilder.BuildCommand(sqlCommand);
             AddCommandToTransaction(command);
             return command;
         }

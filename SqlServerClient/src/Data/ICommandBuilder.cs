@@ -4,6 +4,6 @@ namespace Savage.Data
 {
     public interface ICommandBuilder
     {
-        IDbCommand BuildCommand(IStoredProcedure storedprocedure);
+        IDbCommand BuildCommand(ISqlCommand sqlCommand);
     }
 }
