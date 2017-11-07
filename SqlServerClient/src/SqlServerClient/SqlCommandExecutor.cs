@@ -21,7 +21,7 @@ namespace Savage.Data.SqlServerClient
             return obj;
         }
         
-        public async Task<IEnumerable<IResultSetRow<T>>> ExecuteReaderAsync<T>(IDbCommand command, IDataReaderHandler<T> handler) where T : ISqlCommand
+        public async Task<IEnumerable<IResultSetRow<T>>> ExecuteReaderAsync<T>(IDbCommand command, IDataReaderHandler<T> handler) where T : IDbCommand
         {
             using (var reader = await ((SqlCommand)command).ExecuteReaderAsync())
             {

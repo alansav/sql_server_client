@@ -17,6 +17,7 @@ namespace Savage.Data
             DbConnection = connection;
         }
 
+        #region "Disposing"
         public void Dispose()
         {
             Dispose(true);
@@ -30,6 +31,13 @@ namespace Savage.Data
                 CloseConnection();
             }
         }
+        #endregion
+
+        private async Task OpenConnectionIfClosed()
+        {
+            if (DbConnection.State == ConnectionState.Closed)
+                await DbClient.OpenConnectionAsync(DbConnection);
+        }
 
         private void AddCommandToTransaction(IDbCommand command)
         {
@@ -40,25 +48,38 @@ namespace Savage.Data
             command.Connection = _transaction.Connection;
         }
 
-        public async Task<IEnumerable<IResultSetRow<T>>> ExecuteReaderAsync<T>(T sqlCommand, IDataReaderHandler<T> handler) where T : ISqlCommand
+        private async Task PrepareCommand(IDbCommand dbCommand)
         {
-            IDbCommand command = await BuildCommand(sqlCommand);
-
-            return await DbClient.CommandExecutor.ExecuteReaderAsync(command, handler);
+            SetNullParametersToDbNull(dbCommand);
+            await OpenConnectionIfClosed();
+            AddCommandToTransaction(dbCommand);
         }
 
-        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync<T>(T sqlCommand) where T : ISqlCommand
+        public async Task<IEnumerable<IResultSetRow<T>>> ExecuteReaderAsync<T>(T dbCommand, IDataReaderHandler<T> handler) where T : IDbCommand
         {
-            IDbCommand command = await BuildCommand(sqlCommand);
-
-            return await DbClient.CommandExecutor.ExecuteNonQueryAsync(command);
+            await PrepareCommand(dbCommand);
+            return await DbClient.CommandExecutor.ExecuteReaderAsync(dbCommand, handler);
         }
 
-        public async Task<object> ExecuteScalarAsync<T>(T sqlCommand) where T : ISqlCommand
+        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync<T>(T dbCommand) where T : IDbCommand
         {
-            IDbCommand command = await BuildCommand(sqlCommand);
+            await PrepareCommand(dbCommand);
+            return await DbClient.CommandExecutor.ExecuteNonQueryAsync(dbCommand);
+        }
 
-            return await DbClient.CommandExecutor.ExecuteScalarAsync(command);
+        public async Task<object> ExecuteScalarAsync<T>(T dbCommand) where T : IDbCommand
+        {
+            await PrepareCommand(dbCommand);
+            return await DbClient.CommandExecutor.ExecuteScalarAsync(dbCommand);
+        }
+
+        public async Task ExecuteBatchSql<T>(IEnumerable<T> dbCommands) where T : IDbCommand
+        {
+            foreach (var dbCommand in dbCommands)
+            {
+                await PrepareCommand(dbCommand);
+                await DbClient.CommandExecutor.ExecuteNonQueryAsync(dbCommand);
+            }
         }
 
         public void Commit()
@@ -72,22 +93,24 @@ namespace Savage.Data
             _transaction.Rollback();
             CloseConnection();
         }
-
-        private async Task<IDbCommand> BuildCommand(ISqlCommand sqlCommand)
-        {
-            if (DbConnection.State == ConnectionState.Closed)
-                await DbClient.OpenConnectionAsync(DbConnection);
-
-            var command = DbClient.CommandBuilder.BuildCommand(sqlCommand);
-            AddCommandToTransaction(command);
-            return command;
-        }
-
+        
         private void CloseConnection()
         {
             if (_transaction?.Connection != null && _transaction.Connection.State == ConnectionState.Open)
             {
                 _transaction.Connection.Close();
+            }
+        }
+
+        private static void SetNullParametersToDbNull(IDbCommand command)
+        {
+            if (command.Parameters == null)
+                return;
+
+            foreach (IDbDataParameter p in command.Parameters)
+            {
+                if (p.Value == null)
+                    p.Value = DBNull.Value;
             }
         }
     }

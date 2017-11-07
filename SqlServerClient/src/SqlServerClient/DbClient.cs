@@ -7,12 +7,10 @@ namespace Savage.Data.SqlServerClient
 {
     public class DbClient : IDbClient
     {
-        public ICommandBuilder CommandBuilder { get; private set; }
         public ICommandExecutor CommandExecutor { get; private set; }
 
         public DbClient()
         {
-            CommandBuilder = new SqlCommandBuilder();
             CommandExecutor = new SqlCommandExecutor();
         }
         

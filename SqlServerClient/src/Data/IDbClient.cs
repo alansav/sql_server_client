@@ -5,7 +5,6 @@ namespace Savage.Data
 {
     public interface IDbClient
     {
-        ICommandBuilder CommandBuilder { get; }
         ICommandExecutor CommandExecutor { get; }
 
         Task OpenConnectionAsync(IDbConnection connection);        
