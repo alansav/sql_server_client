@@ -67,10 +67,22 @@ namespace Savage.Data
             return await DbClient.CommandExecutor.ExecuteNonQueryAsync(dbCommand);
         }
 
+        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync(string sql, IEnumerable<IDbDataParameter> parameters = null)
+        {
+            var dbCommand = CreateCommand(sql, parameters);
+            return await ExecuteNonQueryAsync(dbCommand);
+        }
+
         public async Task<object> ExecuteScalarAsync<T>(T dbCommand) where T : IDbCommand
         {
             await PrepareCommand(dbCommand);
             return await DbClient.CommandExecutor.ExecuteScalarAsync(dbCommand);
+        }
+
+        public async Task<object> ExecuteScalarAsync(string sql, IEnumerable<IDbDataParameter> parameters = null)
+        {
+            var dbCommand = CreateCommand(sql, parameters);
+            return await ExecuteScalarAsync(dbCommand);
         }
 
         public async Task ExecuteBatchSql<T>(IEnumerable<T> dbCommands) where T : IDbCommand
@@ -79,6 +91,14 @@ namespace Savage.Data
             {
                 await PrepareCommand(dbCommand);
                 await DbClient.CommandExecutor.ExecuteNonQueryAsync(dbCommand);
+            }
+        }
+
+        public async Task ExecuteBatchSql(IEnumerable<string> sqlStatements)
+        {
+            foreach (var sql in sqlStatements)
+            {
+                await ExecuteNonQueryAsync(sql, null);
             }
         }
 
@@ -92,6 +112,19 @@ namespace Savage.Data
         {
             _transaction.Rollback();
             CloseConnection();
+        }
+
+        private IDbCommand CreateCommand(string sql, IEnumerable<IDbDataParameter> parameters = null)
+        {
+            var dbCommand = DbConnection.CreateCommand();
+            dbCommand.CommandText = sql;
+
+            foreach (var p in parameters)
+            {
+                dbCommand.Parameters.Add(p);
+            }
+
+            return dbCommand;
         }
         
         private void CloseConnection()
