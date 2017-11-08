@@ -73,6 +73,13 @@ namespace Savage.Data
             return await ExecuteNonQueryAsync(dbCommand);
         }
 
+        public async Task<RowsAffectedResultSet> ExecuteNonQueryStoredProcedureAsync(string storedProcedureName, IEnumerable<IDbDataParameter> parameters = null)
+        {
+            var dbCommand = CreateCommand(storedProcedureName, parameters);
+            dbCommand.CommandType = CommandType.StoredProcedure;
+            return await ExecuteNonQueryAsync(dbCommand);
+        }
+
         public async Task<object> ExecuteScalarAsync<T>(T dbCommand) where T : IDbCommand
         {
             await PrepareCommand(dbCommand);
@@ -82,6 +89,13 @@ namespace Savage.Data
         public async Task<object> ExecuteScalarAsync(string sql, IEnumerable<IDbDataParameter> parameters = null)
         {
             var dbCommand = CreateCommand(sql, parameters);
+            return await ExecuteScalarAsync(dbCommand);
+        }
+
+        public async Task<object> ExecuteScalarStoredProcedureAsync(string storedProcedureName, IEnumerable<IDbDataParameter> parameters = null)
+        {
+            var dbCommand = CreateCommand(storedProcedureName, parameters);
+            dbCommand.CommandType = CommandType.StoredProcedure;
             return await ExecuteScalarAsync(dbCommand);
         }
 
