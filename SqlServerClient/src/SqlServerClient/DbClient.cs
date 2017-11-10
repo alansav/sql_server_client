@@ -26,7 +26,7 @@ namespace Savage.Data.SqlServerClient
 
             var connection = new SqlConnection(connectionString);
 
-            return new DbSession(new DbClient(), connection);
+            return new DbSession(this, connection);
         }
     }
 }

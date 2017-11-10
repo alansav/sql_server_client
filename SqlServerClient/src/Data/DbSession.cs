@@ -11,10 +11,10 @@ namespace Savage.Data
         private readonly IDbClient DbClient;
         private readonly IDbConnection DbConnection;
 
-        public DbSession(IDbClient dbClient, IDbConnection connection)
+        public DbSession(IDbClient dbClient, IDbConnection dbConnection)
         {
-            DbClient = dbClient ?? throw new ArgumentNullException(nameof(dbClient));
-            DbConnection = connection;
+            DbClient = dbClient;
+            DbConnection = dbConnection;
         }
 
         #region "Disposing"
@@ -55,13 +55,13 @@ namespace Savage.Data
             AddCommandToTransaction(dbCommand);
         }
 
-        public async Task<IEnumerable<IResultSetRow<T>>> ExecuteReaderAsync<T>(T dbCommand, IDataReaderHandler<T> handler) where T : IDbCommand
+        public async Task<IEnumerable<IResultSetRow>> ExecuteReaderAsync(IDbCommand dbCommand, IDataReaderHandler handler)
         {
             await PrepareCommand(dbCommand);
             return await DbClient.CommandExecutor.ExecuteReaderAsync(dbCommand, handler);
         }
 
-        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync<T>(T dbCommand) where T : IDbCommand
+        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync(IDbCommand dbCommand)
         {
             await PrepareCommand(dbCommand);
             return await DbClient.CommandExecutor.ExecuteNonQueryAsync(dbCommand);
@@ -80,7 +80,7 @@ namespace Savage.Data
             return await ExecuteNonQueryAsync(dbCommand);
         }
 
-        public async Task<object> ExecuteScalarAsync<T>(T dbCommand) where T : IDbCommand
+        public async Task<object> ExecuteScalarAsync(IDbCommand dbCommand)
         {
             await PrepareCommand(dbCommand);
             return await DbClient.CommandExecutor.ExecuteScalarAsync(dbCommand);
@@ -99,12 +99,11 @@ namespace Savage.Data
             return await ExecuteScalarAsync(dbCommand);
         }
 
-        public async Task ExecuteBatchSql<T>(IEnumerable<T> dbCommands) where T : IDbCommand
+        public async Task ExecuteBatchSql(IEnumerable<IDbCommand> dbCommands)
         {
             foreach (var dbCommand in dbCommands)
             {
-                await PrepareCommand(dbCommand);
-                await DbClient.CommandExecutor.ExecuteNonQueryAsync(dbCommand);
+                await ExecuteNonQueryAsync(dbCommand);
             }
         }
 
@@ -132,6 +131,9 @@ namespace Savage.Data
         {
             var dbCommand = DbConnection.CreateCommand();
             dbCommand.CommandText = sql;
+
+            if (parameters == null)
+                return dbCommand;
 
             foreach (var p in parameters)
             {

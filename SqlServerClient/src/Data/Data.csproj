@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>5.1.2</Version>
+    <Version>5.2.0</Version>
     <TargetFrameworks>netstandard2.0;net45;net46;</TargetFrameworks>
     <Title>Core Database Client</Title>
     <Authors>Alan Savage</Authors>

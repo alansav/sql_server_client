@@ -26,7 +26,7 @@ namespace Savage.Data.MySqlClient
 
             var connection = new MySqlConnection(connectionString);
 
-            return new DbSession(new DbClient(), connection);
+            return new DbSession(this, connection);
         }
     }
 }

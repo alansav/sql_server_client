@@ -14,7 +14,7 @@ namespace Savage.Data.MySqlClient
             return new RowsAffectedResultSet(rowsAffected);
         }
 
-        public async Task<IEnumerable<IResultSetRow<T>>> ExecuteReaderAsync<T>(IDbCommand command, IDataReaderHandler<T> handler) where T : IDbCommand
+        public async Task<IEnumerable<IResultSetRow>> ExecuteReaderAsync(IDbCommand command, IDataReaderHandler handler)
         {
             using (var reader = await ((MySqlCommand)command).ExecuteReaderAsync())
             {

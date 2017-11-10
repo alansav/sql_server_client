@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 
 namespace Savage.Data
 {
-    public interface IDataReaderHandler<T> where T : IDbCommand
+    public interface IDataReaderHandler
     {
-        IEnumerable<IResultSetRow<T>> Handle(IOptimizedDataReader optimizedDataReader);
+        IEnumerable<IResultSetRow> Handle(IOptimizedDataReader optimizedDataReader);
     }
 }

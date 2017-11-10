@@ -8,6 +8,6 @@ namespace Savage.Data
     {
         Task<RowsAffectedResultSet> ExecuteNonQueryAsync(IDbCommand command);
         Task<object> ExecuteScalarAsync(IDbCommand command);
-        Task<IEnumerable<IResultSetRow<T>>> ExecuteReaderAsync<T>(IDbCommand command, IDataReaderHandler<T> handler) where T : IDbCommand;
+        Task<IEnumerable<IResultSetRow>> ExecuteReaderAsync(IDbCommand command, IDataReaderHandler handler);
     }
 }
