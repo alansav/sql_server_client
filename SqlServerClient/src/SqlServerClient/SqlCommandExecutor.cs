@@ -1,29 +1,27 @@
 ﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Savage.Data.SqlServerClient
 {
     public class SqlCommandExecutor : ICommandExecutor
     {
-        public  async Task<RowsAffectedResultSet> ExecuteNonQueryAsync(IDbCommand command)
+        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync(IDbCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
-            var rowsAffected = await ((SqlCommand)command).ExecuteNonQueryAsync();
-
+            var rowsAffected = await ((SqlCommand)command).ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
             return new RowsAffectedResultSet(rowsAffected);
         }
-
-        public async Task<object> ExecuteScalarAsync(IDbCommand command)
-        {
-            var obj = await ((SqlCommand)command).ExecuteScalarAsync();
-
-            return obj;
-        }
         
-        public async Task<IEnumerable<IResultSetRow>> ExecuteReaderAsync(IDbCommand command, IDataReaderHandler handler)
+        public async Task<object> ExecuteScalarAsync(IDbCommand command, CancellationToken cancellationToken = default(CancellationToken))
         {
-            using (var reader = await ((SqlCommand)command).ExecuteReaderAsync())
+            return await ((SqlCommand)command).ExecuteScalarAsync(cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task<IEnumerable<IResultSetRow>> ExecuteReaderAsync(IDbCommand command, IDataReaderHandler handler, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            using (var reader = await ((SqlCommand)command).ExecuteReaderAsync(cancellationToken).ConfigureAwait(false))
             {
                 return handler.Handle(new OptimizedDataReader(reader));
             }

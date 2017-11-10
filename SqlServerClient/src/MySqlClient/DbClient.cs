@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Savage.Data.MySqlClient
@@ -14,9 +15,9 @@ namespace Savage.Data.MySqlClient
             CommandExecutor = new MySqlCommandExecutor();
         }
 
-        public async Task OpenConnectionAsync(IDbConnection connection)
+        public async Task OpenConnectionAsync(IDbConnection connection, CancellationToken cancellationToken = default(CancellationToken))
         {
-            await ((MySqlConnection)connection).OpenAsync();
+            await ((MySqlConnection)connection).OpenAsync(cancellationToken);
         }
 
         public IDbSession CreateDbSession(string connectionString)

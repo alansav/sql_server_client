@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Savage.Data.SqlServerClient
@@ -14,9 +15,9 @@ namespace Savage.Data.SqlServerClient
             CommandExecutor = new SqlCommandExecutor();
         }
         
-        public async Task OpenConnectionAsync(IDbConnection connection)
+        public async Task OpenConnectionAsync(IDbConnection connection, CancellationToken cancellationToken = default(CancellationToken))
         {
-            await ((SqlConnection)connection).OpenAsync();
+            await ((SqlConnection)connection).OpenAsync(cancellationToken).ConfigureAwait(false);
         }
 
         public IDbSession CreateDbSession(string connectionString)

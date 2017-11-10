@@ -1,4 +1,5 @@
 ﻿using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Savage.Data
@@ -7,7 +8,7 @@ namespace Savage.Data
     {
         ICommandExecutor CommandExecutor { get; }
 
-        Task OpenConnectionAsync(IDbConnection connection);        
+        Task OpenConnectionAsync(IDbConnection connection, CancellationToken cancellationToken = default (CancellationToken));        
         IDbSession CreateDbSession(string connectionString);
     }
 }

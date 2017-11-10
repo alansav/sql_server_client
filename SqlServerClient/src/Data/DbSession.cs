@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Savage.Data
@@ -33,10 +34,10 @@ namespace Savage.Data
         }
         #endregion
 
-        private async Task OpenConnectionIfClosed()
+        private async Task OpenConnectionIfClosed(CancellationToken cancellationToken = default(CancellationToken))
         {
             if (DbConnection.State == ConnectionState.Closed)
-                await DbClient.OpenConnectionAsync(DbConnection);
+                await DbClient.OpenConnectionAsync(DbConnection, cancellationToken);
         }
 
         private void AddCommandToTransaction(IDbCommand command)
@@ -48,70 +49,70 @@ namespace Savage.Data
             command.Connection = _transaction.Connection;
         }
 
-        private async Task PrepareCommand(IDbCommand dbCommand)
+        private async Task PrepareCommand(IDbCommand dbCommand, CancellationToken cancellationToken = default(CancellationToken))
         {
             SetNullParametersToDbNull(dbCommand);
-            await OpenConnectionIfClosed();
+            await OpenConnectionIfClosed(cancellationToken).ConfigureAwait(false);
             AddCommandToTransaction(dbCommand);
         }
 
-        public async Task<IEnumerable<IResultSetRow>> ExecuteReaderAsync(IDbCommand dbCommand, IDataReaderHandler handler)
+        public async Task<IEnumerable<IResultSetRow>> ExecuteReaderAsync(IDbCommand dbCommand, IDataReaderHandler handler, CancellationToken cancellationToken = default(CancellationToken))
         {
             await PrepareCommand(dbCommand);
-            return await DbClient.CommandExecutor.ExecuteReaderAsync(dbCommand, handler);
+            return await DbClient.CommandExecutor.ExecuteReaderAsync(dbCommand, handler, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync(IDbCommand dbCommand)
+        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync(IDbCommand dbCommand, CancellationToken cancellationToken = default(CancellationToken))
         {
             await PrepareCommand(dbCommand);
-            return await DbClient.CommandExecutor.ExecuteNonQueryAsync(dbCommand);
+            return await DbClient.CommandExecutor.ExecuteNonQueryAsync(dbCommand, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync(string sql, IEnumerable<IDbDataParameter> parameters = null)
+        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync(string sql, IEnumerable<IDbDataParameter> parameters = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var dbCommand = CreateCommand(sql, parameters);
-            return await ExecuteNonQueryAsync(dbCommand);
+            return await ExecuteNonQueryAsync(dbCommand, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<RowsAffectedResultSet> ExecuteNonQueryStoredProcedureAsync(string storedProcedureName, IEnumerable<IDbDataParameter> parameters = null)
+        public async Task<RowsAffectedResultSet> ExecuteNonQueryStoredProcedureAsync(string storedProcedureName, IEnumerable<IDbDataParameter> parameters = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var dbCommand = CreateCommand(storedProcedureName, parameters);
             dbCommand.CommandType = CommandType.StoredProcedure;
-            return await ExecuteNonQueryAsync(dbCommand);
+            return await ExecuteNonQueryAsync(dbCommand, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<object> ExecuteScalarAsync(IDbCommand dbCommand)
+        public async Task<object> ExecuteScalarAsync(IDbCommand dbCommand, CancellationToken cancellationToken = default(CancellationToken))
         {
             await PrepareCommand(dbCommand);
-            return await DbClient.CommandExecutor.ExecuteScalarAsync(dbCommand);
+            return await DbClient.CommandExecutor.ExecuteScalarAsync(dbCommand, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<object> ExecuteScalarAsync(string sql, IEnumerable<IDbDataParameter> parameters = null)
+        public async Task<object> ExecuteScalarAsync(string sql, IEnumerable<IDbDataParameter> parameters = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var dbCommand = CreateCommand(sql, parameters);
-            return await ExecuteScalarAsync(dbCommand);
+            return await ExecuteScalarAsync(dbCommand, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<object> ExecuteScalarStoredProcedureAsync(string storedProcedureName, IEnumerable<IDbDataParameter> parameters = null)
+        public async Task<object> ExecuteScalarStoredProcedureAsync(string storedProcedureName, IEnumerable<IDbDataParameter> parameters = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             var dbCommand = CreateCommand(storedProcedureName, parameters);
             dbCommand.CommandType = CommandType.StoredProcedure;
-            return await ExecuteScalarAsync(dbCommand);
+            return await ExecuteScalarAsync(dbCommand, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task ExecuteBatchSql(IEnumerable<IDbCommand> dbCommands)
+        public async Task ExecuteBatchSqlAsync(IEnumerable<IDbCommand> dbCommands, CancellationToken cancellationToken = default(CancellationToken))
         {
             foreach (var dbCommand in dbCommands)
             {
-                await ExecuteNonQueryAsync(dbCommand);
+                await ExecuteNonQueryAsync(dbCommand, cancellationToken).ConfigureAwait(false);
             }
         }
 
-        public async Task ExecuteBatchSql(IEnumerable<string> sqlStatements)
+        public async Task ExecuteBatchSqlAsync(IEnumerable<string> sqlStatements, CancellationToken cancellationToken = default(CancellationToken))
         {
             foreach (var sql in sqlStatements)
             {
-                await ExecuteNonQueryAsync(sql, null);
+                await ExecuteNonQueryAsync(sql, null, cancellationToken).ConfigureAwait(false);
             }
         }
 
