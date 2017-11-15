@@ -8,10 +8,13 @@ namespace Savage.Data.MySqlClient
 {
     public class DbClient : IDbClient
     {
+        private readonly string ConnectionString;
         public ICommandExecutor CommandExecutor { get; private set; }
 
-        public DbClient()
+        public DbClient(string connectionString)
         {
+            ConnectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+
             CommandExecutor = new MySqlCommandExecutor();
         }
 
@@ -20,12 +23,9 @@ namespace Savage.Data.MySqlClient
             await ((MySqlConnection)connection).OpenAsync(cancellationToken);
         }
 
-        public IDbSession CreateDbSession(string connectionString)
+        public IDbSession CreateDbSession()
         {
-            if (connectionString == null)
-                throw new ArgumentNullException(nameof(connectionString));
-
-            var connection = new MySqlConnection(connectionString);
+            var connection = new MySqlConnection(ConnectionString);
 
             return new DbSession(this, connection);
         }

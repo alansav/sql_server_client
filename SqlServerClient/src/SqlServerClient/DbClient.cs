@@ -8,10 +8,13 @@ namespace Savage.Data.SqlServerClient
 {
     public class DbClient : IDbClient
     {
+        private readonly string ConnectionString;
         public ICommandExecutor CommandExecutor { get; private set; }
 
-        public DbClient()
+        public DbClient(string connectionString)
         {
+            ConnectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+
             CommandExecutor = new SqlCommandExecutor();
         }
         
@@ -20,12 +23,9 @@ namespace Savage.Data.SqlServerClient
             await ((SqlConnection)connection).OpenAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public IDbSession CreateDbSession(string connectionString)
+        public IDbSession CreateDbSession()
         {
-            if (connectionString == null)
-                throw new ArgumentNullException(nameof(connectionString));
-
-            var connection = new SqlConnection(connectionString);
+            var connection = new SqlConnection(ConnectionString);
 
             return new DbSession(this, connection);
         }

@@ -9,6 +9,6 @@ namespace Savage.Data
         ICommandExecutor CommandExecutor { get; }
 
         Task OpenConnectionAsync(IDbConnection connection, CancellationToken cancellationToken = default (CancellationToken));        
-        IDbSession CreateDbSession(string connectionString);
+        IDbSession CreateDbSession();
     }
 }
