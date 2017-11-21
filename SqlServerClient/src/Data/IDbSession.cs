@@ -20,6 +20,7 @@ namespace Savage.Data
 
         Task ExecuteBatchSqlAsync(IEnumerable<IDbCommand> dbCommands, CancellationToken cancellationToken = default(CancellationToken));
         Task ExecuteBatchSqlAsync(IEnumerable<string> sqlStatements, CancellationToken cancellationToken = default(CancellationToken));
+        Task ExecuteBatchSqlAsync(string sql, CancellationToken cancellationToken = default(CancellationToken));
 
         void Commit();
         void Rollback();

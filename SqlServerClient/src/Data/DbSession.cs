@@ -116,6 +116,12 @@ namespace Savage.Data
             }
         }
 
+        public async Task ExecuteBatchSqlAsync(string sql, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            var sqlStatements = DbClient.ToSqlStatements(sql);
+            await ExecuteBatchSqlAsync(sqlStatements, cancellationToken);
+        }
+
         public void Commit()
         {
             _transaction.Commit();

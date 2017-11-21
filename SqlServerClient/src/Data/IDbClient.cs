@@ -1,4 +1,5 @@
-﻿using System.Data;
+﻿using System.Collections.Generic;
+using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -10,5 +11,6 @@ namespace Savage.Data
 
         Task OpenConnectionAsync(IDbConnection connection, CancellationToken cancellationToken = default (CancellationToken));        
         IDbSession CreateDbSession();
+        IEnumerable<string> ToSqlStatements(string sql);
     }
 }

@@ -3,6 +3,7 @@ using System;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace Savage.Data.MySqlClient
 {
@@ -28,6 +29,11 @@ namespace Savage.Data.MySqlClient
             var connection = new MySqlConnection(ConnectionString);
 
             return new DbSession(this, connection);
+        }
+
+        public IEnumerable<string> ToSqlStatements(string sql)
+        {
+            throw new NotImplementedException();
         }
     }
 }
