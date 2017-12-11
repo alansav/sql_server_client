@@ -16,7 +16,7 @@ namespace Savage.Data
         Task<RowsAffectedResultSet> ExecuteNonQueryAsync(string sql, IEnumerable<IDbDataParameter> parameters = null, CancellationToken cancellationToken = default(CancellationToken));
         Task<RowsAffectedResultSet> ExecuteNonQueryStoredProcedureAsync(string storedProcedureName, IEnumerable<IDbDataParameter> parameters = null, CancellationToken cancellationToken = default(CancellationToken));
         
-        Task<IEnumerable<IResultSet>> ExecuteReaderAsync(IDbCommand dbCommand, IDataReaderHandler handler, CancellationToken cancellationToken = default(CancellationToken));
+        Task<IResultSets> ExecuteReaderAsync(IDbCommand dbCommand, IDataReaderHandler handler, CancellationToken cancellationToken = default(CancellationToken));
 
         Task ExecuteBatchSqlAsync(IEnumerable<IDbCommand> dbCommands, CancellationToken cancellationToken = default(CancellationToken));
         Task ExecuteBatchSqlAsync(IEnumerable<string> sqlStatements, CancellationToken cancellationToken = default(CancellationToken));

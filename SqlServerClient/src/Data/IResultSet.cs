@@ -2,8 +2,8 @@
 
 namespace Savage.Data
 {
-    public interface IResultSet
+    public interface IResultSet<T> where T : IResultSetRow
     {
-        IEnumerable<IResultSetRow> Rows { get; }
+        IEnumerable<T> Rows { get; }
     }
 }

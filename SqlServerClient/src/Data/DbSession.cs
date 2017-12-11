@@ -56,7 +56,7 @@ namespace Savage.Data
             AddCommandToTransaction(dbCommand);
         }
 
-        public async Task<IEnumerable<IResultSet>> ExecuteReaderAsync(IDbCommand dbCommand, IDataReaderHandler handler, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IResultSets> ExecuteReaderAsync(IDbCommand dbCommand, IDataReaderHandler handler, CancellationToken cancellationToken = default(CancellationToken))
         {
             await PrepareCommand(dbCommand);
             return await DbClient.CommandExecutor.ExecuteReaderAsync(dbCommand, handler, cancellationToken).ConfigureAwait(false);
