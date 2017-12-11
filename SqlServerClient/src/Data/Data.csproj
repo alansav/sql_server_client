@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>5.3.1</Version>
+    <Version>5.4.1</Version>
     <TargetFrameworks>netstandard2.0;net45;net46;</TargetFrameworks>
     <Title>Core Database Client</Title>
     <Authors>Alan Savage</Authors>
@@ -15,6 +15,10 @@
     <AssemblyName>Savage.Data</AssemblyName>
     <PackageId>Savage.Data</PackageId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ISqlCommandBuilder.cs" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="OptimizedDataReader" Version="1.1.0" />

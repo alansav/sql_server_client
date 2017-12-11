@@ -19,7 +19,7 @@ namespace Savage.Data.SqlServerClient
             return await ((SqlCommand)command).ExecuteScalarAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<IEnumerable<IResultSetRow>> ExecuteReaderAsync(IDbCommand command, IDataReaderHandler handler, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IEnumerable<IResultSet>> ExecuteReaderAsync(IDbCommand command, IDataReaderHandler handler, CancellationToken cancellationToken = default(CancellationToken))
         {
             using (var reader = await ((SqlCommand)command).ExecuteReaderAsync(cancellationToken).ConfigureAwait(false))
             {

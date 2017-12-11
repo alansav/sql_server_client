@@ -4,6 +4,6 @@ namespace Savage.Data
 {
     public interface IDataReaderHandler
     {
-        IEnumerable<IResultSetRow> Handle(IOptimizedDataReader optimizedDataReader);
+        IEnumerable<IResultSet> Handle(IOptimizedDataReader optimizedDataReader);
     }
 }
