@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>5.5.0</Version>
+    <Version>5.5.1</Version>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Title>SQL Server Client</Title>
     <Authors>Alan Savage</Authors>
@@ -13,6 +13,7 @@
     <AssemblyName>Savage.Data.SqlServerClient</AssemblyName>
     <RootNamespace>Savage.Data.SqlServerClient</RootNamespace>
     <PackageId>SqlServerClient</PackageId>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup Condition="'$(TargetFramework)' == 'net46'">

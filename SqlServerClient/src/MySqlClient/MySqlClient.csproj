@@ -12,7 +12,8 @@
     <PackageProjectUrl>https://github.com/alansav/sql_server_client</PackageProjectUrl>
     <RepositoryUrl>https://github.com/alansav/sql_server_client</RepositoryUrl>
     <PackageTags>MySql Client;async</PackageTags>
-    <Version>5.5.0</Version>
+    <Version>5.5.1</Version>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>

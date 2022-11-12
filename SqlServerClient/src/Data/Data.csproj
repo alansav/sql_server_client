@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>5.5.0</Version>
+    <Version>5.5.1</Version>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Title>Core Database Client</Title>
     <Authors>Alan Savage</Authors>
@@ -14,6 +14,7 @@
     <RootNamespace>Savage.Data</RootNamespace>
     <AssemblyName>Savage.Data</AssemblyName>
     <PackageId>Savage.Data</PackageId>
+	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
