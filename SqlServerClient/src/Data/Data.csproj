@@ -1,8 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>5.4.2</Version>
-    <TargetFrameworks>netstandard2.0;net45;net46;</TargetFrameworks>
+    <Version>5.5.0</Version>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Title>Core Database Client</Title>
     <Authors>Alan Savage</Authors>
     <Company>Alan Savage</Company>
@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="OptimizedDataReader" Version="1.1.0" />
+    <PackageReference Include="OptimizedDataReader" Version="1.1.2" />
   </ItemGroup>
 
 </Project>
