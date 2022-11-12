@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>5.4.2</Version>
-    <TargetFrameworks>netstandard2.0;net45;net46;</TargetFrameworks>
+    <Version>5.5.0</Version>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Title>SQL Server Client</Title>
     <Authors>Alan Savage</Authors>
     <Description>A class library which provides a framework for communicating with SQL Server</Description>
@@ -23,7 +23,7 @@
 
   <ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0'">
     <PackageReference Include="System.Data.SqlClient">
-      <Version>4.4.0</Version>
+      <Version>4.8.5</Version>
     </PackageReference>
   </ItemGroup>
 

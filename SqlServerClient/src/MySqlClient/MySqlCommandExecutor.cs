@@ -1,5 +1,4 @@
-﻿using MySql.Data.MySqlClient;
-using System.Collections.Generic;
+﻿using MySqlConnector;
 using System.Data;
 using System.Threading;
 using System.Threading.Tasks;

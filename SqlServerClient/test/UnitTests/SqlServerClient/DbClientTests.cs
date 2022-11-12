@@ -1,5 +1,4 @@
-﻿using Moq.AutoMock;
-using Xunit;
+﻿using Xunit;
 
 namespace Savage.Data.SqlServerClient
 {
