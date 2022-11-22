@@ -19,7 +19,7 @@ namespace Savage.Data.MySqlClient
             CommandExecutor = new MySqlCommandExecutor();
         }
 
-        public async Task OpenConnectionAsync(IDbConnection connection, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task OpenConnectionAsync(IDbConnection connection, CancellationToken cancellationToken = default)
         {
             await ((MySqlConnection)connection).OpenAsync(cancellationToken);
         }

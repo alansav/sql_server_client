@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +7,7 @@ namespace Savage.Data.SqlServerClient
 {
     public class SqlCommandExecutor : ICommandExecutor
     {
-        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync(IDbCommand command, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<RowsAffectedResultSet> ExecuteNonQueryAsync(IDbCommand command, CancellationToken cancellationToken = default)
         {
             var rowsAffected = await ((SqlCommand)command).ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
             return new RowsAffectedResultSet(rowsAffected);
@@ -19,7 +18,7 @@ namespace Savage.Data.SqlServerClient
             return await ((SqlCommand)command).ExecuteScalarAsync(cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<IResultSets> ExecuteReaderAsync(IDbCommand command, IDataReaderHandler handler, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task<IResultSets> ExecuteReaderAsync(IDbCommand command, IDataReaderHandler handler, CancellationToken cancellationToken = default)
         {
             using (var reader = await ((SqlCommand)command).ExecuteReaderAsync(cancellationToken).ConfigureAwait(false))
             {
