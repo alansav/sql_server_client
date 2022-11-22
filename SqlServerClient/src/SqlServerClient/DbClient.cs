@@ -21,7 +21,7 @@ namespace Savage.Data.SqlServerClient
             CommandExecutor = new SqlCommandExecutor();
         }
         
-        public async Task OpenConnectionAsync(IDbConnection connection, CancellationToken cancellationToken = default(CancellationToken))
+        public async Task OpenConnectionAsync(IDbConnection connection, CancellationToken cancellationToken = default)
         {
             await ((SqlConnection)connection).OpenAsync(cancellationToken).ConfigureAwait(false);
         }
