@@ -12,12 +12,12 @@
     <PackageProjectUrl>https://github.com/alansav/sql_server_client</PackageProjectUrl>
     <RepositoryUrl>https://github.com/alansav/sql_server_client</RepositoryUrl>
     <PackageTags>MySql Client;async</PackageTags>
-    <Version>5.5.1</Version>
+    <Version>5.5.2</Version>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySqlConnector" Version="2.2.0" />
+    <PackageReference Include="MySqlConnector" Version="2.3.5" />
   </ItemGroup>
 
   <ItemGroup>
