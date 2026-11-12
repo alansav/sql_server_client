@@ -8,16 +8,16 @@
     <Authors>Alan Savage</Authors>
     <Company>Alan Savage</Company>
     <Description>A class library which provides a framework for communicating with MySql</Description>
-    <Copyright>© 2017 Alan Savage</Copyright>
+    <Copyright>© 2026 Alan Savage</Copyright>
     <PackageProjectUrl>https://github.com/alansav/sql_server_client</PackageProjectUrl>
     <RepositoryUrl>https://github.com/alansav/sql_server_client</RepositoryUrl>
     <PackageTags>MySql Client;async</PackageTags>
-    <Version>5.5.2</Version>
+    <Version>5.6.0</Version>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MySqlConnector" Version="2.3.5" />
+    <PackageReference Include="MySqlConnector" Version="2.6.2" />
   </ItemGroup>
 
   <ItemGroup>
